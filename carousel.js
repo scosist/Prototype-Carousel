@@ -85,7 +85,7 @@ Carousel = Class.create(Abstract, {
   click: function (event) {
     this.stop();
 
-		var element = event.findElement('a');
+		var element = event.currentTarget;
 
 		if (!element.hasClassName(this.options.disabledClassName)) {
 			if (element.hasClassName(this.options.controlClassName)) {
