@@ -115,6 +115,11 @@ Options are given as the last parameter in the initialization as hash: {option: 
     <td>The duration of a full jump</td>
   </tr>
   <tr>
+    <td>initial</td>
+    <td>0</td>
+    <td>Jump to this Slide on Create</td>
+  </tr>
+  <tr>
     <td>auto</td>
     <td>false</td>
     <td>When <strong>true</strong> the Carousel will move on it's own without needing triggers. Useful for slideshows</td>
