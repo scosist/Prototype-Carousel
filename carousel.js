@@ -108,7 +108,7 @@ Carousel = Class.create(Abstract, {
 
   toggleJumpers: function (slide) {
 
-    buttons = $$('.'+this.options.jumperClassName)
+    buttons = this.controls;
     
     selectedClassName = this.options.selectedClassName;
     
