@@ -91,11 +91,15 @@ Carousel = Class.create(Abstract, {
 			if (element.hasClassName(this.options.controlClassName)) {
 				eval("this." + element.rel + "()");
             } else if (element.hasClassName(this.options.jumperClassName)) {
+            	if( !isNaN(element.rel) ){
+            		this.moveTo(this.slides[element.getAttribute('rel')]);
+            	}else{
                 this.moveTo(element.rel);
-                if (this.options.selectedClassName) {
-                    this.controls.invoke('removeClassName', this.options.selectedClassName);
-                    element.addClassName(this.options.selectedClassName);
-                }
+            	}
+              if (this.options.selectedClassName) {
+                  this.controls.invoke('removeClassName', this.options.selectedClassName);
+                  element.addClassName(this.options.selectedClassName);
+              }
             }
         }
     
@@ -403,3 +407,4 @@ Object.extend(Object.extend(Effect.SmoothScroll.prototype, Effect.Base.prototype
 		this.element.scrollTop  = this.options.y * position + this.originalTop;
     }
 });
+
