@@ -79,6 +79,8 @@ Carousel = Class.create(Abstract, {
 				}
 			}
             this.moveTo(this.slides[initialIndex]);
+		}else{
+			this.moveTo(this.slides[0]);
 		}
 	},
 
@@ -232,6 +234,7 @@ Carousel = Class.create(Abstract, {
       break;            
     }
 
+    this.updateControlsState();
 		return false;
 	},
 
@@ -249,10 +252,8 @@ Carousel = Class.create(Abstract, {
 			prevIndex = this.slides.length - 2;
         }
     
-    if (prevIndex == 0) {
-      this.killPrev();
-    }
-    this.restoreNext();
+    this.updateControlsState();
+    
 		this.moveTo(this.slides[prevIndex]);
 	},
 
@@ -274,10 +275,8 @@ Carousel = Class.create(Abstract, {
 			nextIndex = this.slides.length - this.options.visibleSlides;
 		}
 		
-		if (nextIndex == this.slides.length - 1) {
-		  this.killNext();
-		}		
-    this.restorePrev();
+    this.updateControlsState();
+    
 		this.moveTo(this.slides[nextIndex]);
 	},
 
@@ -374,7 +373,32 @@ Carousel = Class.create(Abstract, {
   },
 	activateControls: function () {
 		this.controls.invoke('removeClassName', this.options.disabledClassName);
-    }
+	},
+	updateControlsState: function() {
+		
+		if( this.current._index == this.slides.length - 1 ){
+			this.killNext();
+		}else{
+			this.restoreNext();
+		}
+		
+		if( this.current._index == 0 ){
+			this.killPrev();
+		}else{
+			this.restorePrev();
+		}
+		
+		if (this.options.selectedClassName) {
+			this.controls.invoke('removeClassName', this.options.selectedClassName);
+			var self = this
+			this.controls.each(function( value, index){
+				if( value.getAttribute('rel') == self.current._index || value.getAttribute('rel') == self.current.id){
+					value.addClassName(self.options.selectedClassName);
+				}
+			});
+		}
+		
+	}
 });
 
 
