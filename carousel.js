@@ -36,6 +36,7 @@ Carousel = Class.create(Abstract, {
             auto:               false,
             frequency:          3,
             visibleSlides:      1,
+            moveSteps:          1,
             controlClassName:   'carousel-control',
             jumperClassName:    'carousel-jumper',
             disabledClassName:  'carousel-disabled',
@@ -241,7 +242,7 @@ Carousel = Class.create(Abstract, {
 	prev: function () {
 		if (this.current) {
 			var currentIndex = this.current._index;
-			var prevIndex = (currentIndex == 0) ? (this.options.circular ? this.slides.length - 1 : 0) : currentIndex - 1;
+			var prevIndex = (currentIndex == 0) ? (this.options.circular ? this.slides.length - 1 : 0) : currentIndex - this.options.moveSteps;
         } else {
             var prevIndex = (this.options.circular ? this.slides.length - 1 : 0);
         }
@@ -260,7 +261,7 @@ Carousel = Class.create(Abstract, {
 	next: function () {
 		if (this.current) {
 			var currentIndex = this.current._index;
-			var nextIndex = (this.slides.length - 1 == currentIndex) ? (this.options.circular ? 0 : currentIndex) : currentIndex + 1;
+			var nextIndex = (this.slides.length - 0 < currentIndex + this.options.moveSteps) ? (this.options.circular ? 0 : currentIndex) : currentIndex + this.options.moveSteps;
         } else {
             var nextIndex = 1;
         }
@@ -271,9 +272,9 @@ Carousel = Class.create(Abstract, {
 			nextIndex = 1;
         }
 
-		if (nextIndex > this.slides.length - (this.options.visibleSlides + 1)) {
-			nextIndex = this.slides.length - this.options.visibleSlides;
-		}
+//		if (nextIndex > this.slides.length - (this.options.visibleSlides + 1)) {
+//			nextIndex = this.slides.length - this.options.visibleSlides;
+//		}
 		
     this.updateControlsState();
     
@@ -376,13 +377,13 @@ Carousel = Class.create(Abstract, {
 	},
 	updateControlsState: function() {
 		
-		if( this.current._index == this.slides.length - 1 ){
+		if( this.current._index + this.options.moveSteps > this.slides.length - 1 ){
 			this.killNext();
 		}else{
 			this.restoreNext();
 		}
 		
-		if( this.current._index == 0 ){
+		if( this.current._index - this.options.moveSteps < 0 ){
 			this.killPrev();
 		}else{
 			this.restorePrev();

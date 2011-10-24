@@ -135,6 +135,11 @@ Options are given as the last parameter in the initialization as hash: {option: 
     <td>Even though multiple slides can be made visible at once by styling, this parameters is needed in some calculations</td>
   </tr>
   <tr>
+    <td>moveSteps</td>
+    <td>1</td>
+    <td>How many Slides get moved if you press next/prev</td>
+  </tr>
+  <tr>
     <td>circular</td>
     <td>false</td>
     <td>By default when the first/last slide is reached, calling <strong>prev</strong>/<strong>next</strong> does nothing. If you want the effect to continue, you must do two things: Set the <strong>circular</strong> parameter <strong>true</strong> and <strong>duplicate</strong> the <strong>first</strong> slide in the HTML. It's the only way of giving the impression of a continous movement.</td>
