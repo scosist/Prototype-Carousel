@@ -261,7 +261,7 @@ Carousel = Class.create(Abstract, {
 	next: function () {
 		if (this.current) {
 			var currentIndex = this.current._index;
-			var nextIndex = (this.slides.length - 0 < currentIndex + this.options.moveSteps) ? (this.options.circular ? 0 : currentIndex) : currentIndex + this.options.moveSteps;
+			var nextIndex = (this.slides.length - 1 < currentIndex + this.options.moveSteps) ? (this.options.circular ? 0 : currentIndex) : currentIndex + this.options.moveSteps;
         } else {
             var nextIndex = 1;
         }
