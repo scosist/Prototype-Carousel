@@ -89,12 +89,12 @@ Carousel = Class.create(Abstract, {
 
 		if (!element.hasClassName(this.options.disabledClassName)) {
 			if (element.hasClassName(this.options.controlClassName)) {
-				eval("this." + element.rel + "()");
+				eval("this." + element.getAttribute('rel') + "()");
             } else if (element.hasClassName(this.options.jumperClassName)) {
-            	if( !isNaN(element.rel) ){
+            	if( !isNaN(element.getAttribute('rel')) ){
             		this.moveTo(this.slides[element.getAttribute('rel')]);
             	}else{
-                this.moveTo(element.rel);
+                this.moveTo(element.getAttribute('rel'));
             	}
               if (this.options.selectedClassName) {
                   this.controls.invoke('removeClassName', this.options.selectedClassName);
