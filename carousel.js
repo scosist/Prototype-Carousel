@@ -242,7 +242,7 @@ Carousel = Class.create(Abstract, {
 	prev: function () {
 		if (this.current) {
 			var currentIndex = this.current._index;
-			var prevIndex = (currentIndex == 0) ? (this.options.circular ? this.slides.length - 1 : 0) : currentIndex - this.options.moveSteps;
+			var prevIndex = (currentIndex == 0) ? (this.options.circular ? this.getLastPageIndex() : 0) : currentIndex - this.options.moveSteps;
         } else {
             var prevIndex = (this.options.circular ? this.slides.length - 1 : 0);
         }
@@ -286,8 +286,12 @@ Carousel = Class.create(Abstract, {
     },
 
 	last: function () {
-		this.moveTo(this.slides[this.slides.length - 1]);
+		this.moveTo( this.slides[ this.getLastPageIndex()] );
     },
+    
+	getLastPageIndex: function () {
+		return 	this.slides.length - 1 - ( (this.slides.length-1)%this.options.moveSteps );
+	},
 
 	toggle: function () {
 		if (this.previous) {
@@ -377,13 +381,13 @@ Carousel = Class.create(Abstract, {
 	},
 	updateControlsState: function() {
 		
-		if( this.current._index + this.options.moveSteps > this.slides.length - 1 ){
+		if( this.current._index + this.options.moveSteps > this.slides.length - 1 && this.options.circular == false ){
 			this.killNext();
 		}else{
 			this.restoreNext();
 		}
 		
-		if( this.current._index - this.options.moveSteps < 0 ){
+		if( this.current._index - this.options.moveSteps < 0 && this.options.circular == false ){
 			this.killPrev();
 		}else{
 			this.restorePrev();
