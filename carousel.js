@@ -154,6 +154,9 @@ Carousel = Class.create(Abstract, {
         case 'spring':
             transition = Effect.Transitions.spring;
             break;
+        case 'linear':
+            transition = Effect.Transitions.linear;
+            break;
         case 'sinoidal':
         default:
             transition = Effect.Transitions.sinoidal;
@@ -216,7 +219,7 @@ Carousel = Class.create(Abstract, {
           }).bind(this)
         });
       break;
-      case 'scroll':
+    case 'scroll':
       default:
           this.scrolling = new Effect.SmoothScroll(this.scroller, {
               duration: this.options.duration,
