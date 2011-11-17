@@ -1,4 +1,13 @@
 /*
+Maintenance release by Roel van der Hoorn.
+Version: 2011.11.17
+
+Includes:
+* http://code.google.com/p/prototype-carousel/issues/detail?id=7
+* http://code.google.com/p/prototype-carousel/issues/detail?id=9
+* http://code.google.com/p/prototype-carousel/issues/detail?id=18
+
+--
 Copyright (c) 2009 Victor Stanciu - http://www.victorstanciu.ro
 
 Permission is hereby granted, free of charge, to any person
@@ -34,6 +43,7 @@ Carousel = Class.create(Abstract, {
 		this.options    = Object.extend({
             duration:           1,
             auto:               false,
+            autoPause:          false,
             frequency:          3,
             visibleSlides:      1,
             moveSteps:          1,
@@ -63,6 +73,11 @@ Carousel = Class.create(Abstract, {
 
     if (this.options.wheel) {
         this.scroller.observe('mousewheel', this.wheel.bindAsEventListener(this)).observe('DOMMouseScroll', this.wheel.bindAsEventListener(this));;
+    }
+
+    if (this.options.autoPause) {
+      this.scroller.observe('mouseover', this.pause.bindAsEventListener(this));
+      this.scroller.observe('mouseout',  this.resume.bindAsEventListener(this));
     }
 
     if (this.options.auto) {
@@ -341,8 +356,6 @@ Carousel = Class.create(Abstract, {
     wheel: function (event) {
         event.cancelBubble = true;
         event.stop();
-        // http://code.google.com/p/prototype-carousel/issues/detail?id=7
-        // http://code.google.com/p/prototype-carousel/issues/detail?id=9
         if (event.stop) {
           event.stop();
         }
