@@ -48,20 +48,20 @@ Carousel = Class.create(Abstract, {
             phaseOpacity:       0.3,
             transition:         'sinoidal'
         }, options || {});
-        
+
         if (this.options.effect == 'fade') {
             // this.options.circular = true;
         }
 		this.slides.each(function(slide, index) {
 			slide._index = index;
         });
-            
+
 		if (this.controls) {
             this.controls.invoke('observe', 'click', this.click.bind(this));
             this.killPrev();
     }
-        
-    if (this.options.wheel) {            
+
+    if (this.options.wheel) {
         this.scroller.observe('mousewheel', this.wheel.bindAsEventListener(this)).observe('DOMMouseScroll', this.wheel.bindAsEventListener(this));;
     }
 
@@ -74,7 +74,7 @@ Carousel = Class.create(Abstract, {
 			      } else {
 				var initialIndex = this.slides.indexOf($(this.options.initial));
 			      }
-			if (initialIndex > (this.options.visibleSlides - 1) && this.options.visibleSlides > 1) {               
+			if (initialIndex > (this.options.visibleSlides - 1) && this.options.visibleSlides > 1) {
 				if (initialIndex > this.slides.length - (this.options.visibleSlides + 1)) {
 					initialIndex = this.slides.length - this.options.visibleSlides;
 				}
@@ -105,7 +105,7 @@ Carousel = Class.create(Abstract, {
               }
             }
         }
-    
+
     if (element.rel != 'pause' && element.rel != 'resume') {
       this.deactivateControls();
     }
@@ -116,9 +116,9 @@ Carousel = Class.create(Abstract, {
   toggleJumpers: function (slide) {
 
     buttons = this.controls;
-    
+
     selectedClassName = this.options.selectedClassName;
-    
+
     buttons.each(function (button) {
       if (button.rel == slide.id) {
         button.addClassName(selectedClassName);
@@ -126,7 +126,7 @@ Carousel = Class.create(Abstract, {
         button.removeClassName(selectedClassName);
       }
     });
-    
+
   },
 
 	moveTo: function (element) {
@@ -138,7 +138,7 @@ Carousel = Class.create(Abstract, {
 
 		this.previous = this.current ? this.current : this.slides[0];
 		this.current  = $(element);
-		
+
 		this.previous.addClassName('outbound');
 		this.current.removeClassName('outbound');
 
@@ -148,7 +148,7 @@ Carousel = Class.create(Abstract, {
 		if (this.scrolling) {
 			this.scrolling.cancel();
 		}
-		
+
 		var transition;
     switch (this.options.transition) {
         case 'spring':
@@ -159,9 +159,9 @@ Carousel = Class.create(Abstract, {
             transition = Effect.Transitions.sinoidal;
             break;
     }
-    
+
     switch (this.options.effect) {
-      case 'fade':               
+      case 'fade':
           this.scrolling = new Effect.Opacity(this.scroller, {
               from:   1.0,
               to:     0,
@@ -186,7 +186,7 @@ Carousel = Class.create(Abstract, {
               }
           ).bind(this)});
       break;
-      case 'phase':      
+      case 'phase':
         this.scrolling = new Effect.Opacity(this.scroller, {
           from: 1.0,
           to: this.options.phaseOpacity,
@@ -229,10 +229,10 @@ Carousel = Class.create(Abstract, {
                   }
                   if (this.options.afterMove && (typeof this.options.afterMove == 'function')) {
                       this.options.afterMove();
-                  }                        
+                  }
                   this.scrolling = false;
               }).bind(this)});
-      break;            
+      break;
     }
 
     this.updateControlsState();
@@ -252,9 +252,9 @@ Carousel = Class.create(Abstract, {
 			this.scroller.scrollTop =  (this.slides.length - 1) * this.slides.first().getHeight();
 			prevIndex = this.slides.length - 2;
         }
-    
+
     this.updateControlsState();
-    
+
 		this.moveTo(this.slides[prevIndex]);
 	},
 
@@ -275,9 +275,9 @@ Carousel = Class.create(Abstract, {
 //		if (nextIndex > this.slides.length - (this.options.visibleSlides + 1)) {
 //			nextIndex = this.slides.length - this.options.visibleSlides;
 //		}
-		
+
     this.updateControlsState();
-    
+
 		this.moveTo(this.slides[nextIndex]);
 	},
 
@@ -288,7 +288,7 @@ Carousel = Class.create(Abstract, {
 	last: function () {
 		this.moveTo( this.slides[ this.getLastPageIndex()] );
     },
-    
+
 	getLastPageIndex: function () {
 		return 	this.slides.length - 1 - ( (this.slides.length-1)%this.options.moveSteps );
 	},
@@ -307,7 +307,7 @@ Carousel = Class.create(Abstract, {
 		}
 	},
 
-	start: function () { 
+	start: function () {
         this.periodicallyUpdate();
     },
 
@@ -334,30 +334,30 @@ Carousel = Class.create(Abstract, {
         }
 		this.timer = setTimeout(this.periodicallyUpdate.bind(this), this.options.frequency * 1000);
     },
-    
+
     wheel: function (event) {
         event.cancelBubble = true;
         event.stop();
-        
+
 		var delta = 0;
 		if (!event) {
             event = window.event;
         }
 		if (event.wheelDelta) {
-			delta = event.wheelDelta / 120; 
-		} else if (event.detail) { 
-            delta = -event.detail / 3;	
-        }        
-       
+			delta = event.wheelDelta / 120;
+		} else if (event.detail) {
+            delta = -event.detail / 3;
+        }
+
         if (!this.scrolling) {
             this.deactivateControls();
             if (delta > 0) {
                 this.prev();
             } else {
                 this.next();
-            }            
+            }
         }
-        
+
 		return Math.round(delta); //Safari Round
     },
 
@@ -380,19 +380,19 @@ Carousel = Class.create(Abstract, {
 		this.controls.invoke('removeClassName', this.options.disabledClassName);
 	},
 	updateControlsState: function() {
-		
+
 		if( this.current._index + this.options.moveSteps > this.slides.length - 1 && this.options.circular == false ){
 			this.killNext();
 		}else{
 			this.restoreNext();
 		}
-		
+
 		if( this.current._index - this.options.moveSteps < 0 && this.options.circular == false ){
 			this.killPrev();
 		}else{
 			this.restorePrev();
 		}
-		
+
 		if (this.options.selectedClassName) {
 			this.controls.invoke('removeClassName', this.options.selectedClassName);
 			var self = this
@@ -402,7 +402,7 @@ Carousel = Class.create(Abstract, {
 				}
 			});
 		}
-		
+
 	}
 });
 
